@@ -1,34 +1,61 @@
 (function() {
+  // const myQuestions = [
+  //   {
+  //     question: "Who is the strongest?",
+  //     answers: {
+  //       a: "Superman",
+  //       b: "The Terminator",
+  //       c: "Waluigi, obviously"
+  //     },
+  //     correctAnswer: "c"
+  //   },
+  //   {
+  //     question: "What is the best site ever created?",
+  //     answers: {
+  //       a: "SitePoint",
+  //       b: "Simple Steps Code",
+  //       c: "Trick question; they're both the best"
+  //     },
+  //     correctAnswer: "c"
+  //   },
+  //   {
+  //     question: "Where is Waldo really?",
+  //     answers: {
+  //       a: "Antarctica",
+  //       b: "Exploring the Pacific Ocean",
+  //       c: "Sitting in a tree",
+  //       d: "Minding his own business, so stop asking"
+  //     },
+  //     correctAnswer: "d"
+  //   }
+  // ];
+  const ansArray = ["Iron Man", "Amazon", "Antarctica", "Number"];
   const myQuestions = [
     {
       question: "Who is the strongest?",
-      answers: {
-        a: "Superman",
-        b: "The Terminator",
-        c: "Waluigi, obviously"
-      },
-      correctAnswer: "c"
+      correctAnswer: "Iron Man"
     },
     {
       question: "What is the best site ever created?",
-      answers: {
-        a: "SitePoint",
-        b: "Simple Steps Code",
-        c: "Trick question; they're both the best"
-      },
-      correctAnswer: "c"
+      correctAnswer: "Amazon"
     },
     {
-      question: "Where is Waldo really?",
-      answers: {
-        a: "Antarctica",
-        b: "Exploring the Pacific Ocean",
-        c: "Sitting in a tree",
-        d: "Minding his own business, so stop asking"
-      },
-      correctAnswer: "d"
+      question: "Where is south Pole?",
+      correctAnswer: "Antarctica"
+    },
+    {
+      question: "What is Zero?",
+      correctAnswer: "Number"
     }
   ];
+
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
   function buildQuiz() {
     // we'll need a place to store the HTML output
@@ -37,16 +64,30 @@
     // for each question...
     myQuestions.forEach((currentQuestion, questionNumber) => {
       // we'll want to store the list of answer choices
+       ans = ansArray.slice();
+      //alert(ans);
       const answers = [];
-
+      var index = ans.indexOf(currentQuestion.correctAnswer);
+      if (index !== -1) ans.splice(index, 1);
       // and for each available answer...
-      for (letter in currentQuestion.answers) {
-        // ...add an HTML radio button
+
+      ans = ans.slice(-2);
+      ans.push(currentQuestion.correctAnswer);
+      shuffle(ans);
+      // for (option in ans) {
+      //   // ...add an HTML radio button
+      //   answers.push(
+      //     `<label>
+      //        <input type="radio" name="question${questionNumber}" value="${option}">
+      //         ${option}
+      //      </label>`
+      //   );
+      // }
+      for(let i = 0; i<ans.length; i++){
         answers.push(
           `<label>
-             <input type="radio" name="question${questionNumber}" value="${letter}">
-              ${letter} :
-              ${currentQuestion.answers[letter]}
+             <input type="radio" name="question${questionNumber}" value="${ans[i]}">
+              ${ans[i]}
            </label>`
         );
       }
@@ -61,6 +102,7 @@
     });
 
     // finally combine our output list into one string of HTML and put it on the page
+    //alert(output.join(""));
     quizContainer.innerHTML = output.join("");
   }
 
